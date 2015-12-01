@@ -7,6 +7,13 @@ dimensions et les regles de calcul imposé par le transporteur.
 
 
 
+_________________________________________________________________________________________________________________________________
+
+
+
+
+
+
 * Dans le repository l'application est enregistrée sous .html car Github ne gere pas le .hta
 * pour utiliser l'application enregistrer le fichier html en .hta
 
