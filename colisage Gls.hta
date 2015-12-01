@@ -1,0 +1,185 @@
+<!DOCTYPEhtml>
+<html>
+<head>
+<title>Test colisage transport GLS</title>
+<HTA:APPLICATION ID="RsDepGls"
+APPLICATIONNAME="controle"
+ICON="gls.ICO"
+BORDER="dialog window"
+CAPTION="yes"
+MINIMISEBUTTON="yes"
+SHOWINTASKBAR="yes"
+SINGLEINSTANCE="yes"
+NAVIGABLE="no"
+SYSMENU="yes"
+CONTEXTMENU="yes"
+SCROLL="no">
+
+<script language="vbs">
+ResizeTo 400,690
+MoveTo 425,100
+</script>
+
+<script type="text/Vbscript">
+	Sub bouton_apropos_onclick()
+	MsgBox texte, vbInformation, "A propos"
+	End Sub
+	
+	Sub bouton_aide_onclick()
+	MsgBox helptxt, vbInformation, "Aide"
+	End Sub
+</script>
+
+<script type="text/javascript">
+// texte pour le popup "A propos"
+	var texte="   ...::: Colisage GLS :::...\n\n________________________\n\nApplication de type : HTML Application\n\nEdit\351 sur : Notepad++\n\nAuteur : @lsacer\n\nVersion : V 2015.09.21.3";
+// texte pour le popup "Aide"
+	var helptxt="                             ....::: AIDE :::....\n\n               _______________________________\n\n          !!! *Note : Les cotes sont en mm* !!!\n\n       Pour commencer : \n\nEntrez la longueur et validez\nEntrez la largeur et validez \nEntrez la hauteur et validez pour afficher le resultat.\n\n                        ________________________\n\n        Le bouton Reset :\n Vous permez de remettre le formulaire a zero.\n\n        Le bouton Quitter : \n Vous permez de quitter l'application.\n\n        A propos : \n Vous donne des informations relatives a l'application.";
+	</script>
+	
+<script language="javascript">
+// mettre le focus sur le premier input	
+function donner_focus(chp)
+{
+	document.getElementById(chp).focus();
+	}
+
+//fonction tabulation avec la touche "+"
+function suite(Idnext) {
+var suivant = document.getElementById(Idnext);
+if(window.event.keyCode == 13)
+suivant.focus();
+} 	
+
+</script>
+
+<script type="text/javascript">
+
+// bouton FERMER
+function fermer(){
+self.close();
+}
+
+//fonction groupé pour rsultat final
+function process() {
+calculdim();
+testcotes();
+validGls();
+}
+
+
+// fonction pour calcul de la longueur totale
+function calculdim(){
+var lng=document.getElementById('longueur').value;
+var lrg=document.getElementById('largeur').value;
+var ht=document.getElementById('hauteur').value;
+var tlrg=(lrg *2);
+var tht=(ht *2);
+
+		var resultat=(eval(lng) + eval(tlrg) + eval(tht));
+			document.getElementById('Total').value=resultat;
+			
+	if (resultat<=3000)
+		document.getElementById('validlg').value="ok";
+	else
+		alert("Dimension totale : " +resultat+ " est trop Grande ! \n Dimension totale max : 3000");
+}
+
+// fonction de controles des cotes
+ function testcotes(){
+	
+	var long1=document.getElementById('longueur').value;
+	var larg1=document.getElementById('largeur').value;
+	var haut1=document.getElementById('hauteur').value;
+	
+	var t1=(eval(long1));
+		if(t1>=2001)
+			alert(' Trop grand ! Longueur MAX : 2000 ' );
+
+	var t2=(eval(larg1));
+		if(t2>=801)
+			alert(' Trop grand ! Largeur MAX : 800 ' );
+
+	var t3=(eval(haut1));
+		if(t3>=601)
+			alert(' Trop grand ! Hauteur MAX : 600 ' );
+
+		else 
+			document.getElementById('testlng').value="ok";
+			
+			// 2eme option pour le dernier controle
+/*	var controleComplet=((eval(long1<=2000)) && (eval(larg1<=800)) && (eval(haut1<=600)))
+			document.getElementById('testlng').value="Cotes ok";		
+*/
+		}
+		
+// fonction de validation du colis pour GLS ou non
+function validGls()
+{
+var validLgTot=document.getElementById('testlng').value;
+var validCotes=document.getElementById('validlg').value;
+
+if (validLgTot=='ok' && validCotes=='ok')
+	document.getElementById('resultfinal').value="OK POUR GLS";
+//	document.getElementById('visuel').src="C:\Documents and Settings\cncarton\Desktop\Colisage Gls\glslogo.jpeg";
+else document.getElementById('resultfinal').value="Messagerie obligatoire";
+}
+</script>
+
+
+</head>
+
+<body bgcolor="lightgrey" onload="donner_focus('longueur')">
+<div align="right"><a type="text" name="bouton_aide" value="Aide" title="Aide">Aide</a></div>
+
+<br><center><h2>RYTHMES ET SONS</h2></center>
+<br>
+
+
+<div align="center">
+<form id="form" name="formu" method="post" onreset="donner_focus('longueur')">
+	<label>Longueur</label> : <input type="number" id="longueur" name="longueur" size="5" Class="numberOnly" tabindex="1" onkeypress="suite('largeur')" autofocus/>
+<br>
+	<label>Largeur</label>  : <input type="number" id="largeur" name="largeur" size="5" Class="numberOnly" tabindex="2" onkeypress="suite('hauteur')"/>
+<br>
+	<label>Hauteur</label>  : <input type="number" id="hauteur" name="hauteur" size="5" Class="numberOnly" tabindex="3" onkeypress="suite('verif')"/>
+<br>
+_________________________________
+<br>
+<br>
+<sup>INFO : Longueur + (2X largeur) + (2X hauteur)</sup>
+<br>
+<br>
+<label>Longueur total (<3000)</label> : <input type="text" id="Total" value="Wait" size="5"disabled="disabled">
+<br>
+<br>
+<label>Cotes valide</label> : <input type="text" id="validlg" value="Wait" size="5" disabled="disabled">
+<br>
+<label>Longueur valide</label> : <input type="text" id="testlng" value="Wait" size="5" disabled="disabled">
+<br>
+_________________________________
+<br>
+<br>
+D&eacutepart par GLS ?
+<br>
+<div id="visuel">		</div>
+<br>
+<input type="text" id="resultfinal" value="" readonly="readonly">
+<br>
+Poids Maximum 30Kg
+<br><br>
+<input type="button" id="verif" value="VERIFIER !" onclick="process()" tabindex="4" />
+<br><br>
+<input type="button" value="Reset" onclick="document.forms.formu.reset()"tabindex="6">
+</form>
+</div>
+
+
+
+
+	<div align="right"><input type="button" value="QUITTER !" onclick="fermer()" tabindex="5" /></div>
+<br>
+<a type="text" name="bouton_apropos" value="A propos" title="A propos">A propos</a>
+</body>
+
+</html>
